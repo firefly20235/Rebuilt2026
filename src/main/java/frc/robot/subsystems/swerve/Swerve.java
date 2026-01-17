@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
 /** Represents a swerve drive style drivetrain. */
@@ -36,7 +37,7 @@ public class Swerve {
                                         xSpeed, ySpeed, rot, SwerveConstants.m_gyro.getRotation2d())
                                         : new ChassisSpeeds(xSpeed, ySpeed, rot),
                                 periodSeconds));
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.kMaxSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond));
         SwerveConstants.m_frontLeft.setDesiredState(swerveModuleStates[0]);
         SwerveConstants.m_frontRight.setDesiredState(swerveModuleStates[1]);
         SwerveConstants.m_backLeft.setDesiredState(swerveModuleStates[2]);
