@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import frc.robot.Constants;
 
 /** Represents a swerve drive style drivetrain. */
 public class Swerve {
@@ -28,7 +29,7 @@ public class Swerve {
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
     public void drive(
-            double xSpeed, double ySpeed, double rot, boolean fieldRelative, double periodSeconds) {
+            double xSpeed, double ySpeed, double rot, boolean fieldRelative, ) {
         var swerveModuleStates =
                 SwerveConstants.m_kinematics.toSwerveModuleStates(
                         ChassisSpeeds.discretize(
@@ -36,12 +37,12 @@ public class Swerve {
                                         ? ChassisSpeeds.fromFieldRelativeSpeeds(
                                         xSpeed, ySpeed, rot, SwerveConstants.m_gyro.getRotation2d())
                                         : new ChassisSpeeds(xSpeed, ySpeed, rot),
-                                periodSeconds));
+                                Constants.LOOP_PERIOD_SECONDS));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond));
-        SwerveConstants.m_frontLeft.setDesiredState(swerveModuleStates[0]);
-        SwerveConstants.m_frontRight.setDesiredState(swerveModuleStates[1]);
-        SwerveConstants.m_backLeft.setDesiredState(swerveModuleStates[2]);
-        SwerveConstants.m_backRight.setDesiredState(swerveModuleStates[3]);
+        SwerveConstants.m_frontLeft.setState(swerveModuleStates[0],false);
+        SwerveConstants.m_frontRight.setState(swerveModuleStates[1],false);
+        SwerveConstants.m_backLeft.setState(swerveModuleStates[2],false);
+        SwerveConstants.m_backRight.setState(swerveModuleStates[3],false);
     }
 
     /** Updates the field relative position of the robot. */

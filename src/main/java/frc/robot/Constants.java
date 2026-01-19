@@ -15,8 +15,10 @@ package frc.robot;
  */
 public final class Constants
 {
-    public static class OperatorConstants
-    {
+
         public static final int DRIVER_CONTROLLER_PORT = 0;
-    }
+
+        public static final double LOOP_PERIOD_SECONDS = 0.02;
+
+
 }

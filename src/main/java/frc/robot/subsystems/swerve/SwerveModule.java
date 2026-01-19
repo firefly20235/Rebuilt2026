@@ -134,6 +134,7 @@ public class SwerveModule {
 
         driveMotor.setPosition(0);
 
+
         // Angle motor configuration.
         SparkMaxConfig angleConfig = new SparkMaxConfig();
 
@@ -142,8 +143,8 @@ public class SwerveModule {
                 .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
         angleConfig.encoder
-                .positionConversionFactor(SwerveConstants.ANGLE_ROTATIONS_TO_RADIANS)
-                .velocityConversionFactor(SwerveConstants.ANGLE_RPM_TO_RADIANS_PER_SECOND);
+                .positionConversionFactor(SwerveConstants.ANGLE_ROTATIONS_TO_RADIANS);//TODO: change to gear ratio to degrees
+//                .velocityConversionFactor(SwerveConstants.ANGLE_RPM_TO_RADIANS_PER_SECOND);
 
         angleConfig.closedLoop
                 .p(SwerveConstants.ANGLE_KP)

@@ -45,10 +45,10 @@ class SwerveConstants {
 
 
 
-     static final SwerveModule m_frontRight = new SwerveModule(3, 4, 4, 5, 6);
-     static final SwerveModule m_frontLeft = new SwerveModule(1, 2, 0, 1, 2);
-     static final SwerveModule m_backLeft = new SwerveModule(5, 6, 8, 9, 10);
-     static final SwerveModule m_backRight = new SwerveModule(7, 8, 12, 13, 14);
+     static final SwerveModule m_frontRight = new SwerveModule(1, 2, 1, 10, 6);
+     static final SwerveModule m_frontLeft = new SwerveModule(2, 4, 3, 11, 2);
+     static final SwerveModule m_backLeft = new SwerveModule(3, 6, 5, 12, 10);
+     static final SwerveModule m_backRight = new SwerveModule(4, 8, 7, 13, 14);
 
      static final AnalogGyro m_gyro = new AnalogGyro(0);
 

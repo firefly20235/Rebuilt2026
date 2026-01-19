@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.swerve.Swerve;
 
 
 /**
@@ -32,7 +33,7 @@ public class RobotContainer {
 
     private final Elevator elevator = new Elevator(ElevatorConstants.MOTOR,ElevatorConstants.ENCODER,ElevatorConstants.LIMIT_SWITCH);
 
-    private final Swerve drivetrain = new Swerve();
+    public static final Swerve SWERVE = new Swerve();
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController driverController =
@@ -47,7 +48,15 @@ public class RobotContainer {
     public RobotContainer() {
         // Configure the trigger bindings
         configureBindings();
+
+        SWERVE.drive((
+                () -> -driverController.getLeftX() / 2.5,
+                () -> -driverController.getLeftY() / 2.5,
+                () -> -driverController.getRightX() / 2
+        ));
     }
+
+
 
 
     /**
@@ -68,7 +77,6 @@ public class RobotContainer {
         driverController.y().whileTrue(elevator.getTopCommand());
         driverController.a().whileTrue(elevator.getMiddleCommand());
 
-        driverController.
 
     }
 
