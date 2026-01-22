@@ -35,6 +35,9 @@ class SwerveConstants {
     static final double kMaxSpeed = 3.0; // 3 meters per second
      static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
      static final Distance kWheelDiameter = Units.Meter.of(5.08/100);
+
+
+     static final boolean isFieldRelative = true;
      static final Per<DistanceUnit, AngleUnit> kRotationToDistance = kWheelDiameter.times(Math.PI).per(Units.Rotation);
 
     private static final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);

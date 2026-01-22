@@ -29,7 +29,7 @@ public class Swerve {
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
     public void drive(
-            double xSpeed, double ySpeed, double rot, boolean fieldRelative, ) {
+            double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         var swerveModuleStates =
                 SwerveConstants.m_kinematics.toSwerveModuleStates(
                         ChassisSpeeds.discretize(
