@@ -12,12 +12,34 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.Constants;
+
+import static frc.robot.RobotContainer.SWERVE;
+import static frc.robot.subsystems.swerve.SwerveConstants.MAX_VELOCITY;
 
 /** Represents a swerve drive style drivetrain. */
 public class Swerve {
     public Swerve() {
         SwerveConstants.m_gyro.reset();
+
+
+
+        SWERVE.setDefaultCommand(
+                new FunctionalCommand(
+                        ()-> {},
+                        () -> SWERVE.drive(
+                                SpeedX
+                                SpeedY,
+                                Theta,
+                                IsFieldRelative
+                        ),
+                        (inturupted )-> SWERVE.stop,
+                        ()->false
+
+                )
+        );
+
     }
 
     /**
@@ -56,4 +78,9 @@ public class Swerve {
                         SwerveConstants.m_backRight.getPosition()
                 });
     }
+
+
+
+
+
 }
