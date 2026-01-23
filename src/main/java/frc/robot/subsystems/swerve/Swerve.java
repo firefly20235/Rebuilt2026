@@ -13,44 +13,46 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.RobotContainer.SWERVE;
 import static frc.robot.subsystems.swerve.SwerveConstants.MAX_VELOCITY;
 
-/** Represents a swerve drive style drivetrain. */
-public class Swerve {
+/**
+ * Represents a swerve drive style drivetrain.
+ */
+public class Swerve extends SubsystemBase {
     public Swerve() {
         SwerveConstants.m_gyro.reset();
+    }
 
-
-
-        SWERVE.setDefaultCommand(
-                new FunctionalCommand(
-                        ()-> {},
-                        () -> SWERVE.drive(
-                                SpeedX
-                                SpeedY,
-                                Theta,
-                                IsFieldRelative
-                        ),
-                        (inturupted )-> SWERVE.stop,
-                        ()->false
-
-                )
+    public static FunctionalCommand getDriveCommand(
+            DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta, boolean isFieldRelative) {
+        return new FunctionalCommand(
+                () -> {},
+                () -> drive(x.getAsDouble(), y.getAsDouble(), theta.getAsDouble(), isFieldRelative),
+                (interrupted) -> stopDrive(),
+                () -> false,
+                SWERVE
         );
-
     }
 
     /**
      * Method to drive the robot using joystick info.
      *
-     * @param xSpeed Speed of the robot in the x direction (forward).
-     * @param ySpeed Speed of the robot in the y direction (sideways).
-     * @param rot Angular rate of the robot.
+     * @param xSpeed        Speed of the robot in the x direction (forward).
+     * @param ySpeed        Speed of the robot in the y direction (sideways).
+     * @param rot           Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the field.
      */
-    public void drive(
+    public static void drive(
             double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         var swerveModuleStates =
                 SwerveConstants.m_kinematics.toSwerveModuleStates(
@@ -61,26 +63,29 @@ public class Swerve {
                                         : new ChassisSpeeds(xSpeed, ySpeed, rot),
                                 Constants.LOOP_PERIOD_SECONDS));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond));
-        SwerveConstants.m_frontLeft.setState(swerveModuleStates[0],false);
-        SwerveConstants.m_frontRight.setState(swerveModuleStates[1],false);
-        SwerveConstants.m_backLeft.setState(swerveModuleStates[2],false);
-        SwerveConstants.m_backRight.setState(swerveModuleStates[3],false);
+        SwerveConstants.m_frontLeft.setState(swerveModuleStates[0], false);
+        SwerveConstants.m_frontRight.setState(swerveModuleStates[1], false);
+        SwerveConstants.m_backLeft.setState(swerveModuleStates[2], false);
+        SwerveConstants.m_backRight.setState(swerveModuleStates[3], false);
     }
 
-    /** Updates the field relative position of the robot. */
+    /**
+     * Updates the field relative position of the robot.
+     */
     public void updateOdometry() {
         SwerveConstants.m_odometry.update(
                 SwerveConstants.m_gyro.getRotation2d(),
-                new SwerveModulePosition[] {
+                new SwerveModulePosition[]{
                         SwerveConstants.m_frontLeft.getPosition(),
                         SwerveConstants.m_frontRight.getPosition(),
-                        SwerveConstants. m_backLeft.getPosition(),
+                        SwerveConstants.m_backLeft.getPosition(),
                         SwerveConstants.m_backRight.getPosition()
                 });
     }
 
+    public static void stopDrive() {
 
-
+    }
 
 
 }

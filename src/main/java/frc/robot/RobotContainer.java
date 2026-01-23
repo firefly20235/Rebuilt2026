@@ -5,13 +5,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.units.Units;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.Constants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Elevator;
@@ -22,8 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.swerve.Swerve;
-
-import static frc.robot.subsystems.swerve.SwerveConstants.MAX_VELOCITY;
 
 
 /**
@@ -62,20 +54,6 @@ public class RobotContainer {
 
     }
 
-    public Command swerveCommand(){
-        return new StartEndCommand(null,
-         SWERVE.drive(
-                 -driverController.getLeftY()*MAX_VELOCITY,
-                -driverController.getRawAxis(STRAFE_AXIS),
-                driverController.getRawAxis(ROTATION_AXIS),
-
-                )
-        );
-    }
-
-
-
-
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
      * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
@@ -94,7 +72,13 @@ public class RobotContainer {
         driverController.y().whileTrue(elevator.getTopCommand());
         driverController.a().whileTrue(elevator.getMiddleCommand());
 
-
+        SWERVE.setDefaultCommand(Swerve.getDriveCommand(
+                () -> -driverController.getLeftX() / 2.5,
+                () -> -driverController.getLeftY() / 2.5,
+                () -> -driverController.getRightX() / 2,
+                true
+        )
+        );
     }
 
 

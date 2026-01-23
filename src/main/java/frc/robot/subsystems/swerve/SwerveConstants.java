@@ -20,13 +20,24 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import static com.ctre.phoenix6.signals.SensorDirectionValue.CounterClockwise_Positive;
 
 class SwerveConstants {
+    //Steer motor PID constants
      public static final double ANGLE_KP = 0;
      public static final double ANGLE_KI = 0;
      public static final double ANGLE_KD = 0;
+
+     //sensor config
      public static final SensorDirectionValue CANCODER_INVERSION = CounterClockwise_Positive;
+
+     /*
+     TODO:
+     1) convert constants to use WPIlib units system
+     2) tune steer motor pid
+     3) calibrate offsets
+      */
+
     public static final LinearVelocity MAX_VELOCITY = Units.Meters.of(4).per(Units.Seconds);
-    public static final double ANGLE_ROTATIONS_TO_RADIANS = 0;//TODO
-    public static final double ANGLE_RPM_TO_RADIANS_PER_SECOND = 0;//TODO
+    public static final double ANGLE_ROTATIONS_TO_RADIANS = 0;
+    public static final double ANGLE_RPM_TO_RADIANS_PER_SECOND = 0;
     public static final double DRIVE_GEAR_RATIO = 0;
     public static final double WHEEL_CIRCUMFERENCE_METERS = 0;
     public static final double DRIVE_KS = 0;
