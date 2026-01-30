@@ -2,8 +2,6 @@ package frc.robot.subsystems.swerve;
 
 
 import com.ctre.phoenix6.configs.*;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,10 +20,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
-import frc.robot.Constants;
 
 import static com.ctre.phoenix6.signals.InvertedValue.CounterClockwise_Positive;
-import static edu.wpi.first.units.Units.Amps;
 
 public class SwerveModule {
     public final int moduleNumber;
@@ -40,7 +36,7 @@ public class SwerveModule {
     private final CANcoder canCoder;
     private final double canCoderOffsetDegrees;
 
-    private double lastAngle;
+    private Angle lastAngle;
 
     public SwerveModule(int moduleNumber, int driveMotorID, int angleMotorID, int canCoderID, double canCoderOffsetDegrees) {
         this.moduleNumber = moduleNumber;
@@ -56,20 +52,31 @@ public class SwerveModule {
         this.canCoderOffsetDegrees = canCoderOffsetDegrees;
 
         configureDevices();
-        lastAngle = getState().angle.getRadians();
+        lastAngle = getState().angle.getMeasure();
     }
 
     public void setState(SwerveModuleState state, boolean isOpenLoop) {
+        System.out.println(
+                "setState angle=" +
+                        state.angle.getDegrees() +
+                        "speed=" +
+                        state.speedMetersPerSecond
+        );
 
-        state = SwerveModuleState.optimize(state, getState().angle);
+
+        state.optimize(getState().angle);
 
         if (isOpenLoop) {
             double percentOutput =
                     state.speedMetersPerSecond
                             / SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond);
 
-            driveMotor.setControl(new DutyCycleOut(percentOutput));
+            System.out.println("percentOutput=" + percentOutput);
+
+            driveMotor.set(percentOutput);
         }
+
+
 
 //        } else {
 //
@@ -89,11 +96,11 @@ public class SwerveModule {
 //        }
 
 
-        double angle = Math.abs(state.speedMetersPerSecond) <= SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) * 0.01
+        Angle angle = Math.abs(state.speedMetersPerSecond) <= SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) * 0.01
                 ? lastAngle
-                : state.angle.getRadians();
+                : state.angle.getMeasure();
 
-        anglePID.setReference(angle, SparkMax.ControlType.kPosition);
+        anglePID.setReference(angle.in(Units.Rotations), SparkMax.ControlType.kPosition);
         lastAngle = angle;
     }
 
@@ -143,7 +150,7 @@ public class SwerveModule {
                 .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
         angleConfig.encoder
-                .positionConversionFactor(SwerveConstants.ANGLE_ROTATIONS_TO_RADIANS);//TODO: change to gear ratio to degrees
+                .positionConversionFactor(SwerveConstants.STEER_GEAR_RATIO);
 //                .velocityConversionFactor(SwerveConstants.ANGLE_RPM_TO_RADIANS_PER_SECOND);
 
         angleConfig.closedLoop
@@ -152,7 +159,7 @@ public class SwerveModule {
                 .d(SwerveConstants.ANGLE_KD)
                 .positionWrappingEnabled(true)
                 .positionWrappingMinInput(0)
-                .positionWrappingMaxInput(2 * Math.PI);
+                .positionWrappingMaxInput(1);
 
         angleMotor.configure(
                 angleConfig,
@@ -166,7 +173,6 @@ public class SwerveModule {
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
         canCoderConfiguration.MagnetSensor.SensorDirection = SwerveConstants.CANCODER_INVERSION;
 
-        canCoder.getConfigurator().apply(new CANcoderConfiguration());
         canCoder.getConfigurator().apply(canCoderConfiguration);
     }
 }

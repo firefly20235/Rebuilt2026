@@ -5,17 +5,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.ElevatorConstants;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.swerve.SwerveConstants;
+
+import java.util.function.DoubleSupplier;
 
 
 /**
@@ -30,7 +32,6 @@ public class RobotContainer {
 
     private final Spinner spinner = new Spinner();
 
-    private final Elevator elevator = new Elevator(ElevatorConstants.MOTOR,ElevatorConstants.ENCODER,ElevatorConstants.LIMIT_SWITCH);
 
     public static final Swerve SWERVE = new Swerve();
 
@@ -69,16 +70,19 @@ public class RobotContainer {
                 .onTrue(new ExampleCommand(exampleSubsystem));
 
         driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-        driverController.y().whileTrue(elevator.getTopCommand());
-        driverController.a().whileTrue(elevator.getMiddleCommand());
 
-        SWERVE.setDefaultCommand(Swerve.getDriveCommand(
-                () -> -driverController.getLeftX() / 2.5,
-                () -> -driverController.getLeftY() / 2.5,
-                () -> -driverController.getRightX() / 2,
+
+           SWERVE.setDefaultCommand(Swerve.getDriveCommand(
+                () -> -driverController.getLeftY()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond),
+                () -> -driverController.getLeftX()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond),
+                () -> -driverController.getRightX()*SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond),
                 true
         )
         );
+
+
+
+
     }
 
 
@@ -91,4 +95,7 @@ public class RobotContainer {
         // An example command will be run in autonomous
         return Autos.exampleAuto(exampleSubsystem);
     }
+
+
+
 }
