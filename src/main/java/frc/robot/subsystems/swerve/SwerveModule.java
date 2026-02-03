@@ -21,6 +21,7 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 
+import static com.ctre.phoenix6.signals.InvertedValue.Clockwise_Positive;
 import static com.ctre.phoenix6.signals.InvertedValue.CounterClockwise_Positive;
 
 public class SwerveModule {
@@ -136,7 +137,7 @@ public class SwerveModule {
                                 .withNeutralMode(NeutralModeValue.Brake))
                 .withMotorOutput(
                         new MotorOutputConfigs()
-                                .withInverted(CounterClockwise_Positive)
+                                .withInverted(Clockwise_Positive)
                 );
 
         driveMotor.setPosition(0);
@@ -146,7 +147,7 @@ public class SwerveModule {
         SparkMaxConfig angleConfig = new SparkMaxConfig();
 
         angleConfig
-                .inverted(false)
+                .inverted(true)
                 .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
         angleConfig.encoder
