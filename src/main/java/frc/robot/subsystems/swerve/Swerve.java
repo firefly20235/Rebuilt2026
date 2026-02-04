@@ -33,8 +33,7 @@ public class Swerve extends SubsystemBase {
     public static FunctionalCommand getDriveCommand(
             DoubleSupplier x, DoubleSupplier y, DoubleSupplier theta, boolean isFieldRelative) {
         return new FunctionalCommand(
-                () -> {
-                },
+                () -> {},
                 () -> drive(x.getAsDouble(), y.getAsDouble(), theta.getAsDouble(), isFieldRelative),
                 (interrupted) -> stopDrive(),
                 () -> false,
@@ -91,6 +90,9 @@ public class Swerve extends SubsystemBase {
                 moduleStates,
                 SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)
         );
+
+        System.out.println("x=" + xSpeed + " y=" + ySpeed + " rot=" + rot);
+
 
 
 

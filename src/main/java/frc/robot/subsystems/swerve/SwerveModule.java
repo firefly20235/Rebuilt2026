@@ -65,7 +65,9 @@ public class SwerveModule {
         );
 
 
-        state.optimize(getState().angle);
+//        state.optimize(getState().angle);
+        state = SwerveModuleState.optimize(state, getState().angle);
+
 
         if (isOpenLoop) {
             double percentOutput =
@@ -73,6 +75,12 @@ public class SwerveModule {
                             / SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond);
 
             System.out.println("percentOutput=" + percentOutput);
+
+            System.out.println(
+                            " targetAngle=" + state.angle.getDegrees() +
+                            " targetSpeed=" + state.speedMetersPerSecond
+            );
+
 
             driveMotor.set(percentOutput);
         }

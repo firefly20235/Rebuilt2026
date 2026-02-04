@@ -73,15 +73,12 @@ public class RobotContainer {
 
 
            SWERVE.setDefaultCommand(Swerve.getDriveCommand(
-                () -> -driverController.getLeftY()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond),
-                () -> -driverController.getLeftX()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond),
-                () -> -driverController.getRightX()*SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond),
+                () -> -driverController.getLeftY()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
+                () -> -driverController.getLeftX()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
+                () -> -driverController.getRightX()*SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond)/2,
                 true
         )
         );
-
-
-
 
     }
 
