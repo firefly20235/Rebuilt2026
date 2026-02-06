@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
 
     /*TODO:
     setShooterSpeed
-    atSpeed
+    isAtSpeed
      */
 
 
