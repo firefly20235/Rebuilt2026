@@ -32,9 +32,8 @@ import static com.ctre.phoenix6.signals.SensorDirectionValue.CounterClockwise_Po
     //conversion factors
     public static final LinearVelocity MAX_VELOCITY = Units.Meters.of(4).per(Units.Seconds);
     public static final AngularVelocity MAX_ANGULAR_VELOCITY = Units.RotationsPerSecond.of(3);
-    public static final double ANGLE_ROTATIONS_TO_RADIANS =  2 * Math.PI * 7.0 / 150.0;;
-    public static final AngularVelocity ANGLE_RPM_TO_RADIANS_PER_SECOND = Units.RadiansPerSecond.of(2 * Math.PI / 60);
     public static final double STEER_GEAR_RATIO = 7/150.0;
+    public static final double DRIVE_GEAR_RATIO = 6.75;
     public static final double WHEEL_CIRCUMFERENCE_METERS = 0.1016;
     public static final double DRIVE_KS = 0.2;
     public static final double DRIVE_KV = 1.8;

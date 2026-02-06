@@ -22,7 +22,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 
 import static com.ctre.phoenix6.signals.InvertedValue.Clockwise_Positive;
-import static com.ctre.phoenix6.signals.InvertedValue.CounterClockwise_Positive;
 
 public class SwerveModule {
     public final int moduleNumber;
@@ -65,8 +64,7 @@ public class SwerveModule {
         );
 
 
-//        state.optimize(getState().angle);
-        state = SwerveModuleState.optimize(state, getState().angle);
+        state.optimize(getState().angle);
 
 
         if (isOpenLoop) {
@@ -77,14 +75,13 @@ public class SwerveModule {
             System.out.println("percentOutput=" + percentOutput);
 
             System.out.println(
-                            " targetAngle=" + state.angle.getDegrees() +
+                    " targetAngle=" + state.angle.getDegrees() +
                             " targetSpeed=" + state.speedMetersPerSecond
             );
 
 
             driveMotor.set(percentOutput);
         }
-
 
 
 //        } else {
@@ -115,7 +112,7 @@ public class SwerveModule {
 
     public SwerveModuleState getState() {
         Angle anglePerSecond = driveMotor.getVelocity().getValue().times(Units.Second.one());
-        var distancePerSecond = SwerveConstants.kRotationToDistance.timesDivisor(anglePerSecond);
+        var distancePerSecond = SwerveConstants.kRotationToDistance.timesDivisor(anglePerSecond.div(SwerveConstants.DRIVE_GEAR_RATIO));
 
         Rotation2d rot = new Rotation2d(angleEncoder.getPosition());
         return new SwerveModuleState(distancePerSecond.in(Units.Meter), rot);
@@ -131,8 +128,8 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
 
-        Angle angle = driveMotor.getPosition().getValue();
-        var distance = SwerveConstants.kRotationToDistance.timesDivisor(angle);
+        Angle motorAngle = driveMotor.getPosition().getValue();
+        var distance = SwerveConstants.kRotationToDistance.timesDivisor(motorAngle.div(SwerveConstants.DRIVE_GEAR_RATIO));
         Rotation2d rot = new Rotation2d(angleEncoder.getPosition());
         return new SwerveModulePosition((Distance) distance, rot);
     }
@@ -140,13 +137,14 @@ public class SwerveModule {
     private void configureDevices() {
         // Drive motor configuration.
 
-        TalonFXConfiguration driveMotorConfigs = new TalonFXConfiguration().withMotorOutput(
-                        new MotorOutputConfigs()
-                                .withNeutralMode(NeutralModeValue.Brake))
-                .withMotorOutput(
-                        new MotorOutputConfigs()
-                                .withInverted(Clockwise_Positive)
-                );
+        TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration().withMotorOutput(
+                new MotorOutputConfigs()
+                        .withNeutralMode(NeutralModeValue.Brake)
+                        .withInverted(Clockwise_Positive)
+
+        );
+
+        driveMotor.getConfigurator().apply(driveMotorConfig);
 
         driveMotor.setPosition(0);
 
@@ -177,11 +175,13 @@ public class SwerveModule {
         );
 
 
-
         // CanCoder configuration.
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
         canCoderConfiguration.MagnetSensor.SensorDirection = SwerveConstants.CANCODER_INVERSION;
 
         canCoder.getConfigurator().apply(canCoderConfiguration);
+
+        angleEncoder.setPosition(getCanCoder().minus(Units.Degrees.of(canCoderOffsetDegrees)).in(Units.Rotations));
+
     }
 }
