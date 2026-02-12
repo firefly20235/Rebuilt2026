@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,6 +26,8 @@ public class Shooter extends SubsystemBase {
         leftShooterMotor.setControl(
                 new Follower(rightShooterMotor.getDeviceID(), false)
         );
+
+
     }
 
     public void setAngle(Angle angle) {
@@ -40,8 +43,8 @@ public class Shooter extends SubsystemBase {
         feederMotor.set(ShooterConstants.MOTOR_FEED_VALUE);
     }
 
-    public Angle getShooterSpeed() {
-        return rightShooterMotor.getVelocity().getValue().times(Units.Second.one());
+    public AngularVelocity getShooterSpeed() {
+        return rightShooterMotor.getVelocity().getValue();
     }
 
     public void setShooterSpeed(double targetRPS) {
@@ -56,20 +59,16 @@ public class Shooter extends SubsystemBase {
         feederMotor.stopMotor();
     }
 
-//    public boolean isAtSpeed() {
-//        double error = Math.abs(getShooterSpeed());
-//
-//        return error < ShooterConstants.SHOOTER_TOLERANCE_RPS
-//                && getShooterSpeedRPS() > targetShooterRPS * 0.9;
-//    }
+    public boolean isAtSpeed(AngularVelocity targetShooterRPS) {
 
+        AngularVelocity currentSpeed = getShooterSpeed();
 
+        double error = Math.abs(
+                currentSpeed.minus(targetShooterRPS)
+                        .in(Units.Rotations.per(Units.Second))
+        );
 
-    /*TODO:
-    setShooterSpeed
-    isAtSpeed
-     */
-
-
+        return error < ShooterConstants.SHOOTER_TOLERANCE_RPS;
+    }
 }
 
