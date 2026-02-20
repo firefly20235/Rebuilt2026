@@ -121,5 +121,9 @@ public class Swerve extends SubsystemBase {
 
     }
 
-
+    @Override
+    public void periodic() {
+        super.periodic();
+        System.out.println("Back Left Angle " + SwerveConstants.m_backLeft.getAngle().getDegrees());
+    }
 }

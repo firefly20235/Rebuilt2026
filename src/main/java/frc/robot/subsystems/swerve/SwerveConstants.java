@@ -52,10 +52,10 @@ import static com.ctre.phoenix6.signals.SensorDirectionValue.CounterClockwise_Po
 
 
 
-     static final SwerveModule m_frontRight = new SwerveModule(1, 2, 1, 10, -0.282227*360);
-     static final SwerveModule m_frontLeft = new SwerveModule(2, 4, 3, 11, 0.553955*360);
-     static final SwerveModule m_backLeft = new SwerveModule(3, 6, 5, 12, -0.330322*360);
-     static final SwerveModule m_backRight = new SwerveModule(4, 8, 7, 13, 0.257324*360);
+     static final SwerveModule m_frontRight = new SwerveModule(1, 2, 1, 10, -0.38525390625*360);
+     static final SwerveModule m_frontLeft = new SwerveModule(2, 4, 3, 11, 0.0625*360);
+     static final SwerveModule m_backLeft = new SwerveModule(3, 6, 5, 12, 0.08154296875*360);
+     static final SwerveModule m_backRight = new SwerveModule(4, 8, 7, 13, 0.173583984375*360);
 
      static final AnalogGyro m_gyro = new AnalogGyro(0);
 

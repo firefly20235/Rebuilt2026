@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
         );
     }
 
-    public static FunctionalCommand ShootCommand(AngularVelocity targetSpeed) {
+    public FunctionalCommand ShootCommand(AngularVelocity targetSpeed) {
         return new FunctionalCommand(
 
                 () -> {
@@ -82,7 +82,6 @@ public class Shooter extends SubsystemBase {
 
     public static void stopShooter() {
         rightShooterMotor.stopMotor();
-        leftShooterMotor.stopMotor();
         feederMotor.stopMotor();
     }
 
@@ -92,7 +91,7 @@ public class Shooter extends SubsystemBase {
 
         AngularVelocity error = currentSpeed.minus(targetShooterRPS);
 
-        return error < ShooterConstants.SHOOTER_TOLERANCE_RPS;
+        return Math.abs(error.in(Units.RotationsPerSecond)) < ShooterConstants.SHOOTER_TOLERANCE_RPS;
     }
 }
 
