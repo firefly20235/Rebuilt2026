@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
@@ -34,6 +35,9 @@ public class RobotContainer {
 
 
     public static final Swerve SWERVE = new Swerve();
+
+    public static final Climb CLIMB = new Climb();
+
 
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
