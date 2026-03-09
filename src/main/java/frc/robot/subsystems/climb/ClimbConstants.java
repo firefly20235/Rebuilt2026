@@ -1,3 +1,7 @@
+package frc.robot.subsystems.climb;
+
+public class ClimbConstants {
+}
 package frc.robot.subsystems.climb;// package frc.robot.subsystems.climb;
 
 // import com.revrobotics.spark.SparkLowLevel.MotorType;

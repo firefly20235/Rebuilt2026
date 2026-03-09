@@ -22,6 +22,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 
 import static com.ctre.phoenix6.signals.InvertedValue.Clockwise_Positive;
+import static com.ctre.phoenix6.signals.InvertedValue.CounterClockwise_Positive;
 
 public class SwerveModule {
     public final int moduleNumber;
@@ -126,7 +127,7 @@ public SwerveModuleState getState() {
     }
 
     public Rotation2d getAngle() {
-        return new Rotation2d(angleEncoder.getPosition());
+        return Rotation2d.fromRotations(angleEncoder.getPosition());
     }
 
     public SwerveModulePosition getPosition() {
@@ -143,7 +144,7 @@ public SwerveModuleState getState() {
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration().withMotorOutput(
                 new MotorOutputConfigs()
                         .withNeutralMode(NeutralModeValue.Brake)
-                        .withInverted(Clockwise_Positive)
+                        .withInverted(CounterClockwise_Positive)
 
         );
 
@@ -181,10 +182,11 @@ public SwerveModuleState getState() {
         // CanCoder configuration.
         CANcoderConfiguration canCoderConfiguration = new CANcoderConfiguration();
         canCoderConfiguration.MagnetSensor.SensorDirection = SwerveConstants.CANCODER_INVERSION;
+        canCoderConfiguration.MagnetSensor.MagnetOffset = Units.Degrees.of(canCoderOffsetDegrees).in(Units.Rotations);//TODO: change variable to Rotations
 
         canCoder.getConfigurator().apply(canCoderConfiguration);
 
-        angleEncoder.setPosition(getCanCoder().minus(Units.Degrees.of(canCoderOffsetDegrees)).in(Units.Rotations));
+        angleEncoder.setPosition(getCanCoder().in(Units.Rotations));
 
     }
 }
