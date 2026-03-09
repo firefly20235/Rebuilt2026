@@ -18,7 +18,7 @@ public class Conveyor extends SubsystemBase {
     public Conveyor() {
     }
 
-    private void setSpeeds(LinearVelocity mainSpeed,LinearVelocity sideSpeed) {
+    private void setSpeeds(LinearVelocity mainSpeed, LinearVelocity sideSpeed) {
         MainConveyorMotor.set(mainSpeed.in(Units.MetersPerSecond));
         SideConveyorMotor.set(sideSpeed.in(Units.MetersPerSecond));
     }

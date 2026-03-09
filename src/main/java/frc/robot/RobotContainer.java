@@ -5,10 +5,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.apriltagcamera.AprilTagCamera;
+import frc.robot.apriltagcamera.AprilTagCameraConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.poseestimator.PoseEstimator;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -18,8 +22,6 @@ import frc.robot.subsystems.climb.Climb;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
-import java.util.function.DoubleSupplier;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,22 +30,27 @@ import java.util.function.DoubleSupplier;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    // The robot's subsystems and commands are defined here...
     private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-
-    private final Spinner spinner = new Spinner();
-
-
     public static final Swerve SWERVE = new Swerve();
 
     public static final Climb CLIMB = new Climb();
 
+    public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(
+            new AprilTagCamera(
+                    AprilTagCameraConstants.AprilTagCameraType.LIMELIGHT,//Type of camera
+                    "TestLimelight",//Name of camera. Just how it logs it/refers to it in code. Doesn't need to match anything
+                    new Transform3d()//The offset of the camera from the center of the robot. For testing, it should be fine, but for a real robot it needs to know what to offset the position by to find the final robot's position.
+            )
+    );
+    //Creates a new Pose Estimator and adds a limelight to it
+    //Periodic method is called in Robot.java to update the pose estimator and cameras
+    //The Limelight logs its own information from the AprilTagCamera class
+    //The Pose Estimator logs its information from the PoseEstimator class
+    //I also commented out a few things in PoseEstimator.java that should be implemented at some point...
 
 
-    // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController driverController =
             new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
-
 
 
     private final XboxController regularDriverController =
@@ -76,14 +83,13 @@ public class RobotContainer {
         driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 
 
-           SWERVE.setDefaultCommand(Swerve.getDriveCommand(
-                () -> -driverController.getLeftY()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
-                () -> -driverController.getLeftX()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
-                () -> -driverController.getRightX()*SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond)/2,
-                true
-        )
+        SWERVE.setDefaultCommand(Swerve.getDriveCommand(
+                        () -> -driverController.getLeftY() * SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) / 2.5,
+                        () -> -driverController.getLeftX() * SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) / 2.5,
+                        () -> -driverController.getRightX() * SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond) / 2,
+                        true
+                )
         );
-
     }
 
 
@@ -93,10 +99,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
         return Autos.exampleAuto(exampleSubsystem);
     }
-
 
 
 }

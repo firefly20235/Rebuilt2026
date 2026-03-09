@@ -5,6 +5,7 @@
 package frc.robot.subsystems.swerve;
 
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.units.Units;
@@ -21,6 +22,7 @@ import java.util.function.DoubleSupplier;
 
 import static frc.robot.RobotContainer.SWERVE;
 import static frc.robot.subsystems.swerve.SwerveConstants.MAX_VELOCITY;
+import static frc.robot.subsystems.swerve.SwerveConstants.m_gyro;
 
 /**
  * Represents a swerve drive style drivetrain.
@@ -122,4 +124,11 @@ public class Swerve extends SubsystemBase {
     }
 
 
+    public Rotation2d getHeading() {
+        return m_gyro.getRotation2d();
+    }
+
+    public SwerveModulePosition[] getSwerveModulePositions() {
+        return null;
+    }
 }

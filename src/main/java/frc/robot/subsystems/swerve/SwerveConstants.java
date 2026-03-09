@@ -59,7 +59,7 @@ import static com.ctre.phoenix6.signals.SensorDirectionValue.CounterClockwise_Po
 
      static final AnalogGyro m_gyro = new AnalogGyro(0);
 
-     static final SwerveDriveKinematics m_kinematics =
+     public static final SwerveDriveKinematics m_kinematics =
             new SwerveDriveKinematics(
                     m_frontLeftLocation, m_frontRightLocation, m_backLeftLocation, m_backRightLocation);
 
