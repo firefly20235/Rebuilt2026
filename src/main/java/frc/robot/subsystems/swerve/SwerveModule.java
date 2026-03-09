@@ -109,14 +109,17 @@ public class SwerveModule {
         anglePID.setReference(angle.in(Units.Rotations), SparkMax.ControlType.kPosition);
         lastAngle = angle;
     }
+public SwerveModuleState getState() {
+    Angle anglePerSecond = driveMotor.getVelocity().getValue().times(Units.Second.one());
 
-    public SwerveModuleState getState() {
-        Angle anglePerSecond = driveMotor.getVelocity().getValue().times(Units.Second.one());
-        var distancePerSecond = SwerveConstants.kRotationToDistance.timesDivisor(anglePerSecond.div(SwerveConstants.DRIVE_GEAR_RATIO));
+    var distancePerSecond =
+            SwerveConstants.kRotationToDistance
+                    .timesDivisor(anglePerSecond.div(SwerveConstants.DRIVE_GEAR_RATIO));
 
-        Rotation2d rot = new Rotation2d(angleEncoder.getPosition());
-        return new SwerveModuleState(distancePerSecond.in(Units.Meter), rot);
-    }
+    Rotation2d rot = Rotation2d.fromRotations(angleEncoder.getPosition());
+
+    return new SwerveModuleState(distancePerSecond.in(Units.Meters), rot);
+}
 
     public Angle getCanCoder() {
         return canCoder.getAbsolutePosition().getValue();
