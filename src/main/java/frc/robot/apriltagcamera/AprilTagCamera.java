@@ -43,6 +43,7 @@ public class AprilTagCamera {
 //        return inputs.hasTarget && inputs.poseAmbiguity < AprilTagCameraConstants.MAX_AMBIGUITY;
     }
 
+    public Matrix<N3, N1> calculateStandardDeviations() {
         final double averageDistanceFromTags = calculateAverageDistance();
 //        final double translationStandardDeviation = calculateStandardDeviations(AprilTagCameraConstants.TRANSLATION_STANDARD_DEVIATION_EXPONENT, averageDistanceFromTags, inputs.visibleTagIDs.length);
 //        final double rotationStandardDeviation = calculateStandardDeviations(AprilTagCameraConstants.ROTATION_STANDARD_DEVIATION_EXPONENT, averageDistanceFromTags, inputs.visibleTagIDs.length);
