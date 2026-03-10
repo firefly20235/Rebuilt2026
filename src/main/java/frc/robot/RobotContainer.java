@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.climb.Climb;
+import frc.robot.subsystems.intake.Intake;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
@@ -28,6 +29,8 @@ import frc.robot.subsystems.swerve.SwerveConstants;
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     public static final Climb CLIMB = new Climb();
+
+    public static final Intake INTAKE = new Intake();
 
     public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(
             new AprilTagCamera(
@@ -44,7 +47,6 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     private final CommandXboxController driverController =
             new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
-
 
 
     private final XboxController regularDriverController =
@@ -77,12 +79,12 @@ public class RobotContainer {
         driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 
 
-           SWERVE.setDefaultCommand(Swerve.getDriveCommand(
-                () -> -driverController.getLeftY()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
-                () -> -driverController.getLeftX()* SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond)/2.5,
-                () -> -driverController.getRightX()*SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond)/2,
-                true
-        )
+        SWERVE.setDefaultCommand(Swerve.getDriveCommand(
+                        () -> -driverController.getLeftY() * SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) / 2.5,
+                        () -> -driverController.getLeftX() * SwerveConstants.MAX_VELOCITY.in(Units.MetersPerSecond) / 2.5,
+                        () -> -driverController.getRightX() * SwerveConstants.MAX_ANGULAR_VELOCITY.in(Units.RadiansPerSecond) / 2,
+                        true
+                )
         );
 
     }
@@ -97,7 +99,6 @@ public class RobotContainer {
         // An example command will be run in autonomous
         return Autos.exampleAuto(exampleSubsystem);
     }
-
 
 
 }
