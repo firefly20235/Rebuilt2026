@@ -29,7 +29,7 @@ public class IntakeConstants {
             new TrapezoidProfile.Constraints(1, 1) // TODO: tune constraints
     );
 
-    public static final double GEAR_RATIO = 5.0; // TODO: find gear ratio
+    public static final double GEAR_RATIO = 5.0;
     public static final double ENCODER_TO_METERS = 1.0 / GEAR_RATIO; // TODO: adjust conversion
 
 }

@@ -8,32 +8,42 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Main;
 
 
 public class Conveyor extends SubsystemBase {
 
     private final SparkMax MainConveyorMotor = new SparkMax(40, SparkLowLevel.MotorType.kBrushless);
-    private final TalonFX SideConveyorMotor = new TalonFX(41);
 
     public Conveyor() {
     }
 
-    private void setSpeeds(LinearVelocity mainSpeed, LinearVelocity sideSpeed) {
-        MainConveyorMotor.set(mainSpeed.in(Units.MetersPerSecond));
-        SideConveyorMotor.set(sideSpeed.in(Units.MetersPerSecond));
+    private void setSpeeds() {
+        MainConveyorMotor.set(ConveyorConstants.mainSpeed);
+    }
+
+    private void setOppositeSpeeds() {
+        MainConveyorMotor.set(-ConveyorConstants.mainSpeed);
     }
 
     private void stop() {
         MainConveyorMotor.stopMotor();
-        SideConveyorMotor.stopMotor();
     }
 
-    public StartEndCommand runConveyorCommand(LinearVelocity mainSpeed, LinearVelocity sideSpeed) {
+    public StartEndCommand runConveyorCommand() {
         return new StartEndCommand(
-                () -> setSpeeds(mainSpeed,sideSpeed),
+                () -> setSpeeds(),
                 () -> {
                     stop();
                 },
+                this
+        );
+    }
+
+    public StartEndCommand oppositeConveyorCommand() {
+        return new StartEndCommand(
+                () -> setOppositeSpeeds(),
+                () -> stop(),
                 this
         );
     }

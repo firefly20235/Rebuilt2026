@@ -9,13 +9,16 @@ import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.apriltagcamera.AprilTagCamera;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.climb.Climb;
+import frc.robot.subsystems.conveyor.Conveyor;
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.shooter.Shooter;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.swerve.SwerveConstants;
 
@@ -32,13 +35,17 @@ public class RobotContainer {
 
     public static final Intake INTAKE = new Intake();
 
-    public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(
-            new AprilTagCamera(
-                    AprilTagCameraConstants.AprilTagCameraType.LIMELIGHT,//Type of camera
-                    "TestLimelight",//Name of camera. Just how it logs it/refers to it in code. Doesn't need to match anything
-                    new Transform3d()//The offset of the camera from the center of the robot. For testing, it should be fine, but for a real robot it needs to know what to offset the position by to find the final robot's position.
-            )
-    );
+    public static final Conveyor CONVEYOR = new Conveyor();
+
+    public static final Shooter SHOOTER = new Shooter();
+
+//    public static final PoseEstimator POSE_ESTIMATOR = new PoseEstimator(
+//            new AprilTagCamera(
+//                    AprilTagCameraConstants.AprilTagCameraType.LIMELIGHT,//Type of camera
+//                    "TestLimelight",//Name of camera. Just how it logs it/refers to it in code. Doesn't need to match anything
+//                    new Transform3d()//The offset of the camera from the center of the robot. For testing, it should be fine, but for a real robot it needs to know what to offset the position by to find the final robot's position.
+//            )
+//    );
 
 
     public static final Swerve SWERVE = new Swerve();
@@ -48,18 +55,11 @@ public class RobotContainer {
     private final CommandXboxController driverController =
             new CommandXboxController(Constants.DRIVER_CONTROLLER_PORT);
 
+    private final CommandXboxController operatorController =
+            new CommandXboxController(Constants.OPERATOR_CONTROLLER_PORT);
 
-    private final XboxController regularDriverController =
-            new XboxController(Constants.DRIVER_CONTROLLER_PORT);
-
-
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
     public RobotContainer() {
         configureBindings();
-
-
     }
 
     /**
@@ -72,11 +72,10 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-        new Trigger(exampleSubsystem::exampleCondition)
-                .onTrue(new ExampleCommand(exampleSubsystem));
 
-        driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
+
+        operatorController.rightBumper().whileTrue(CONVEYOR.runConveyorCommand());
+//        operatorController.y().onTrue(SHOOTER.ShootCommand());
 
 
         SWERVE.setDefaultCommand(Swerve.getDriveCommand(
@@ -95,10 +94,10 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
-    public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return Autos.exampleAuto(exampleSubsystem);
-    }
+//    public Command getAutonomousCommand() {
+//        // An example command will be run in autonomous
+//        return Autos.exampleAuto(exampleSubsystem);
+//    }
 
 
 }

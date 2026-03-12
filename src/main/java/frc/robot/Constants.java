@@ -21,4 +21,5 @@ public final class Constants
         public static final double LOOP_PERIOD_SECONDS = 0.02;
 
 
+        public static final int OPERATOR_CONTROLLER_PORT = 1;
 }

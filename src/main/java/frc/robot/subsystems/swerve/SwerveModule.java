@@ -20,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static com.ctre.phoenix6.signals.InvertedValue.Clockwise_Positive;
 
@@ -53,6 +54,9 @@ public class SwerveModule {
 
         configureDevices();
         lastAngle = getState().angle.getMeasure();
+
+        SmartDashboard.putNumber("Module" + moduleNumber + " encoder", angleEncoder.getPosition());
+        SmartDashboard.putNumber("Module" + moduleNumber + " cancoder", getCanCoder().in(Units.Rotations));
     }
 
     public void setState(SwerveModuleState state, boolean isOpenLoop) {
